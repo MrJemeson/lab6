@@ -1,17 +1,25 @@
 package ru.bmstu;
 
-import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.apache.catalina.Context;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.startup.Tomcat;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 import ru.bmstu.config.AppConfig;
-import ru.bmstu.services.impl.UIServiceImpl;
 
-import java.io.IOException;
+import java.io.File;
 
 public class App {
-    public static void main(String[] args) throws CsvValidationException, IOException {
-        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class)) {
-            UIServiceImpl ui = context.getBean(UIServiceImpl.class);
-            ui.start();
-        }
+    public static void main(String[] args) throws  LifecycleException {
+        Tomcat tomcat = new Tomcat();
+        tomcat.setPort(8080);
+        tomcat.getConnector();
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(AppConfig.class);
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(context);
+        Context ctx = tomcat.addContext("", new File("").getAbsolutePath());
+        Tomcat.addServlet(ctx, "dispatcher", dispatcherServlet);
+        ctx.addServletMappingDecoded("/*", "dispatcher");
+        tomcat.start();
     }
 }

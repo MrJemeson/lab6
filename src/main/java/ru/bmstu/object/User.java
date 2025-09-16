@@ -1,4 +1,4 @@
-package ru.bmstu.objects;
+package ru.bmstu.object;
 
 public class User {
     private final int ID;
@@ -30,7 +30,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "ID: "+ this.getID() + " "  + this.getFULL_NAME() + ". " + this.getROLE() +
+        return "ID:"+ this.getID() + " "  + this.getFULL_NAME() + ". " + this.getROLE() +
         ((this.getROLE().equals("Student"))?(". Tokens: " + this.getTokens()):("."));
     }
 }

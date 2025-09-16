@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.bmstu.services.LoggerService;
+import ru.bmstu.service.LoggerService;
 
 @Aspect
 @Component
@@ -18,9 +18,9 @@ public class LoggerAspect {
         this.loggerService = loggerService;
     }
 
-    @AfterReturning(pointcut = "execution(* ru.bmstu.services.UserService.updateUser(..)) || " +
-            "execution(* ru.bmstu.services.UserService.addUser(..)) || " +
-            "execution(* ru.bmstu.services.UserService.deleteUser(..))",
+    @AfterReturning(pointcut = "execution(* ru.bmstu.service.UserService.updateUser(..)) || " +
+            "execution(* ru.bmstu.service.UserService.addUser(..)) || " +
+            "execution(* ru.bmstu.service.UserService.deleteUser(..))",
             returning = "result")
     public void makeLog(JoinPoint joinPoint, Object result) {
         String methodName = joinPoint.getSignature().getName();

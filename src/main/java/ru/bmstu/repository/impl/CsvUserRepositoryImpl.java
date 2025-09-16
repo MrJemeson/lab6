@@ -1,12 +1,12 @@
-package ru.bmstu.repositories.impl;
+package ru.bmstu.repository.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
-import ru.bmstu.objects.User;
-import ru.bmstu.repositories.UserRepository;
+import ru.bmstu.object.User;
+import ru.bmstu.repository.UserRepository;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,9 +23,8 @@ public class CsvUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> loadUsers() throws IOException, CsvValidationException {
+    public List<User> loadUsers(){
         List<User> users = new ArrayList<>();
-
         try (CSVReader reader = new CSVReader(new InputStreamReader(csvResource.getInputStream()))) {
             String[] parts;
             boolean firstLine = true;
@@ -43,6 +42,8 @@ public class CsvUserRepositoryImpl implements UserRepository {
                     e.printStackTrace();
                 }
             }
+        } catch (Exception e) {
+            return null;
         }
 
         return users;

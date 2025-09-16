@@ -1,25 +1,25 @@
-//package ru.bmstu.components;
+//package ru.bmstu.service.impl;
 //
 //import com.opencsv.exceptions.CsvValidationException;
 //import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Component;
+//import org.springframework.stereotype.Service;
 //import ru.bmstu.Render;
 //import ru.bmstu.aspect.RoleCheck;
-//import ru.bmstu.objects.User;
-//import ru.bmstu.services.UserService;
+//import ru.bmstu.object.User;
+//import ru.bmstu.service.UserService;
 //
 //import java.io.IOException;
 //import java.util.Arrays;
 //import java.util.List;
 //import java.util.Scanner;
 //
-//@Component
-//public class UI {
+//@Service
+//public class UIServiceImpl {
 //    private final UserService userService;
 //    private final Scanner scanner;
 //
 //    @Autowired
-//    public UI(UserService userService) {
+//    public UIServiceImpl(UserService userService) {
 //        this.userService = userService;
 //        this.scanner = new Scanner(System.in);
 //    }
@@ -29,30 +29,32 @@
 //        List<User> users = userService.getUsers();
 //        User user;
 //        String name;
-//        while(true) {
-//            name = scanner.nextLine();
-//            if(!users.stream().map(User::getFULL_NAME).toList().contains(name)) {
-//                Render.displayNoSuchUserMessage();
-//            } else {
-//                break;
+//        while (true) {
+//            if(scanner.hasNext()) {
+//                name = scanner.nextLine();
+//                if (!users.stream().map(User::getFULL_NAME).toList().contains(name)) {
+//                    Render.displayNoSuchUserMessage();
+//                } else {
+//                    break;
+//                }
 //            }
 //        }
 //        String finalName = name;
-//        if(users.stream().filter(x -> x.getFULL_NAME().equals(finalName)).toList().size() > 1) {
+//        if (users.stream().filter(x -> x.getFULL_NAME().equals(finalName)).toList().size() > 1) {
 //            int numOfUsers = Render.displayUserList(users.stream().filter(x -> x.getFULL_NAME().equals(finalName)).toList());
 //            Render.displayEnteringProfile();
 //            int input;
 //            while (true) {
-//                if(scanner.hasNextInt()){
+//                if (scanner.hasNextInt()) {
 //                    input = scanner.nextInt();
-//                    if(input > 0 && input <= numOfUsers) {
+//                    if (input > 0 && input <= numOfUsers) {
 //                        break;
 //                    }
 //                }
 //                Render.displayWrongInput();
 //            }
 //            user = users.stream().filter(x -> x.getFULL_NAME().equals(finalName)).toList().get(input);
-//        } else user = users.stream().filter(x -> x.getFULL_NAME().equals(finalName)).toList().getFirst();
+//        } else user = users.stream().filter(x -> x.getFULL_NAME().equals(finalName)).toList().get(0);
 //        Render.displayWelcomeMessage(user);
 //        RoleCheck.setCurrentRole(user.getROLE());
 //        mainMenu();
@@ -62,18 +64,18 @@
 //        int intInput;
 //        String input;
 //        outerLoop:
-//        while(true) {
+//        while (true) {
 //            Render.displayMainMenu();
-//            if(scanner.hasNextInt()) {
+//            if (scanner.hasNextInt()) {
 //                intInput = scanner.nextInt();
-//                if(!RoleCheck.isTeacher()) intInput++;
-//                switch (intInput){
+//                if (!RoleCheck.isTeacher() && intInput>=2) intInput++;
+//                switch (intInput) {
 //                    case 1: {
 //                        addUser();
 //                        continue;
 //                    }
 //                    case 2: {
-//                        if(RoleCheck.isTeacher()) {
+//                        if (RoleCheck.isTeacher()) {
 //                            deleteStudent();
 //                            continue;
 //                        }
@@ -89,11 +91,12 @@
 //                    case 5: {
 //                        break outerLoop;
 //                    }
-//                    default: Render.displayWrongInput();
+//                    default:
+//                        Render.displayWrongInput();
 //                }
 //            } else {
 //                input = scanner.next();
-//                if(input.equals("end")) {
+//                if (input.equals("end")) {
 //                    return;
 //                } else {
 //                    Render.displayWrongInput();
@@ -108,23 +111,27 @@
 //        try {
 //            Render.displayEnterNameRequest();
 //            String name;
-//            while(true) {
-//                name = scanner.nextLine();
-//                if(name.contains(" ") && Arrays.stream(name.split(" ")).filter(x -> !Character.isDigit(x.charAt(0))).toList().size() == 2) {
-//                    break;
-//                } else {
-//                    Render.displayWrongInput();
-//                }
-//            }
-//            String role = "Student";
-//            if(RoleCheck.isTeacher()) {
-//                Render.displayEnterRoleRequest();
-//                while(true) {
-//                    role = scanner.nextLine();
-//                    if(Arrays.asList("Student", "Teacher").contains(role)) {
+//            while (true) {
+//                if(scanner.hasNext()) {
+//                    name = scanner.nextLine();
+//                    if (name.contains(" ") && Arrays.stream(name.split(" ")).filter(x -> !Character.isDigit(x.charAt(0))).toList().size() == 2) {
 //                        break;
 //                    } else {
 //                        Render.displayWrongInput();
+//                    }
+//                }
+//            }
+//            String role = "Student";
+//            if (RoleCheck.isTeacher()) {
+//                Render.displayEnterRoleRequest();
+//                while (true) {
+//                    if(scanner.hasNext()) {
+//                        role = scanner.nextLine();
+//                        if (Arrays.asList("Student", "Teacher").contains(role)) {
+//                            break;
+//                        } else {
+//                            Render.displayWrongInput();
+//                        }
 //                    }
 //                }
 //            }
@@ -140,10 +147,10 @@
 //            Render.displayUserList(userService.getUsers().stream().filter(x -> x.getROLE().equals("Student")).toList());
 //            Render.displayEnterIdRequest();
 //            int id;
-//            while(true) {
-//                if(scanner.hasNextInt()) {
+//            while (true) {
+//                if (scanner.hasNextInt()) {
 //                    id = scanner.nextInt();
-//                    if(userService.getUsers().stream().filter(x -> x.getROLE().equals("Student")).map(User::getID).toList().contains(id)) {
+//                    if (userService.getUsers().stream().filter(x -> x.getROLE().equals("Student")).map(User::getID).toList().contains(id)) {
 //                        userService.deleteUser(id);
 //                        break;
 //                    }
@@ -160,10 +167,10 @@
 //            Render.displayUserList(userService.getUsers().stream().filter(x -> x.getROLE().equals("Student")).toList());
 //            Render.displayEnterIdRequest();
 //            int id;
-//            while(true) {
-//                if(scanner.hasNextInt()) {
+//            while (true) {
+//                if (scanner.hasNextInt()) {
 //                    id = scanner.nextInt();
-//                    if(userService.getUsers().stream().filter(x -> x.getROLE().equals("Student")).map(User::getID).toList().contains(id)) {
+//                    if (userService.getUsers().stream().filter(x -> x.getROLE().equals("Student")).map(User::getID).toList().contains(id)) {
 //                        break;
 //                    }
 //                }
@@ -172,10 +179,10 @@
 //            int finalId = id;
 //            Render.displayEnterTokenChangeRequest();
 //            int change;
-//            while(true) {
-//                if(scanner.hasNextInt()) {
+//            while (true) {
+//                if (scanner.hasNextInt()) {
 //                    change = scanner.nextInt();
-//                    if(change * (-1) < userService.getUsers().stream().filter(x -> x.getID() == finalId).toList().getFirst().getTokens()) {
+//                    if (change * (-1) < userService.getUsers().stream().filter(x -> x.getID() == finalId).toList().get(0).getTokens()) {
 //                        userService.updateUser(finalId, change);
 //                        break;
 //                    }
@@ -187,3 +194,4 @@
 //        }
 //    }
 //}
+//
