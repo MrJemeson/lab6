@@ -1,9 +1,9 @@
-package ru.bmstu.services.impl;
+package ru.bmstu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.bmstu.services.LoggerService;
+import ru.bmstu.service.LoggerService;
 
 import java.io.IOException;
 import java.nio.file.Files;

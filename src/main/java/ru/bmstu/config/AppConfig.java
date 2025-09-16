@@ -1,13 +1,16 @@
 package ru.bmstu.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.core.io.FileSystemResource;
-import ru.bmstu.repositories.UserRepository;
-import ru.bmstu.repositories.impl.CsvUserRepositoryImpl;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.bmstu.interceptor.CredentialsInterceptor;
 
 @Configuration
 @ComponentScan("ru.bmstu")
 @EnableAspectJAutoProxy
+@EnableWebMvc
 @PropertySource("classpath:application.properties")
-public class AppConfig { }
+@Import(SwaggerConfig.class)
+public class AppConfig implements WebMvcConfigurer { }

@@ -1,4 +1,4 @@
-package ru.bmstu.services;
+package ru.bmstu.service;
 
 import com.opencsv.exceptions.CsvValidationException;
 
