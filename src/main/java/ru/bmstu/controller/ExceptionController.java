@@ -14,11 +14,11 @@ public class ExceptionController {
         String paramName = e.getName();
         String value = (e.getValue() != null) ? e.getValue().toString() : "null";
         String message = String.format("Invalid value '%s' for parameter '%s'", value, paramName);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Bad Request", message)); // not cool
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Bad Request", message));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Unauthorized", e.getMessage())); // not cool
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Unauthorized", e.getMessage()));
     }
 }
