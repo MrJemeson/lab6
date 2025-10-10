@@ -10,7 +10,6 @@ import ru.bmstu.interceptor.CredentialsInterceptor;
 @Configuration
 @ComponentScan("ru.bmstu")
 @EnableAspectJAutoProxy
-@EnableWebMvc
 @PropertySource("classpath:application.properties")
-@Import(SwaggerConfig.class)
+@Import({SwaggerConfig.class, WebConfig.class})
 public class AppConfig implements WebMvcConfigurer { }
